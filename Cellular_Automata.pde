@@ -9,3 +9,7 @@ void draw() {
   cell.cellDraw();
   cell.simulate();
 }
+
+void mousePressed() {
+ cell.restart(); 
+}

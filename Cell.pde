@@ -1,43 +1,70 @@
 class Cell {
-  int [] cells;  
-  int[] ruleset = {0, 1, 0, 1, 1, 0, 1, 0};
+  int columns;
+  int rows;
+  int[][] board;
+
   int w = 10;
   int generation = 0;
 
   Cell() {
-    cells = new int[width/w];
-    for (int i = 0; i < cells.length; i++) {
-      cells[i] = 0;
+    columns = width/w;
+    rows = height/w;
+
+    board = new int[columns][rows];
+    for (int x = 0; x < columns; x++) {
+      for (int y = 0; y < rows; y++) {
+        int temp = int(random(2));
+        board[x][y] = temp;
+      }
     }
-    cells[cells.length/2] = 1;
   }
 
   void simulate() {
-    int[] newcells = new int[cells.length]; 
+    int[][] next = new int[columns][rows];
+    for (int x = 1; x < columns-1; x++) {
+      for (int y = 1; y < rows-1; y++) {
+        int neighbors = 0;
+        for (int i = -1; i <= 1; i++) {
+          for (int j = -1; j <= 1; j++) {
+            neighbors += board[x+i][y+j];
+          }
+        }
+        neighbors -= board[x][y];
 
-    for (int i = 1; i < cells.length-1; i++) {
-      int left   = cells[i-1];
-      int middle = cells[i];
-      int right  = cells[i+1]; 
-      newcells[i] = rules(left, middle, right);
+        if      ((board[x][y] == 1) && (neighbors <  2)) next[x][y] = 0;
+        else if ((board[x][y] == 1) && (neighbors >  3)) next[x][y] = 0;
+        else if ((board[x][y] == 0) && (neighbors == 3)) next[x][y] = 1;
+        else next[x][y] = board[x][y];
+      }
     }
-    cells = newcells;
-    generation++;
-  }
-
-  int rules(int _l, int _mid, int _r) {
-    String s = "" + _l + _mid + _r;
-
-    int index = Integer.parseInt(s, 2);
-
-    return ruleset[index];
+    board = next;
   }
 
   void cellDraw() {
-    for (int i = 0; i < cells.length; i++) {
-      if (cells[i] == 1) fill(0);
-      else               fill(255);
-      rect(i*w, generation*w, w, w);
+    for ( int i = 0; i < columns; i++) {
+      for ( int j = 0; j < rows; j++) {
+
+        // Black when state = 1
+        if ((board[i][j] == 1)) fill(0);
+        // White when state = 0
+        else fill(255);
+        stroke(0);
+
+        rect(i*w, j*w, w, w);
+      }
+    }
+  }
+
+  void restart() {
+    columns = width/w;
+    rows = height/w;
+
+    board = new int[columns][rows];
+    for (int x = 0; x < columns; x++) {
+      for (int y = 0; y < rows; y++) {
+        int temp = int(random(2));
+        board[x][y] = temp;
+      }
     }
   }
 }
