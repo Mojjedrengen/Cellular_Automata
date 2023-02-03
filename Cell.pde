@@ -2,11 +2,13 @@ class Cell {
   int columns;
   int rows;
   int[][] board;
+  int seed = 69;
 
   int w = 10;
   int generation = 0;
 
   Cell() {
+    randomSeed(seed);
     columns = width/w;
     rows = height/w;
 

@@ -1,7 +1,8 @@
 Cell cell;
 
 void setup() {
-  size(1000, 700);
+  //size(1250, 1250);
+  fullScreen();
   cell = new Cell();
 }
 
