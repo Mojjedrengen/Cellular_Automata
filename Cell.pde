@@ -8,7 +8,7 @@ class Cell {
   int generation = 0;
 
   Cell() {
-    randomSeed(seed);
+    //randomSeed(seed);
     columns = width/w;
     rows = height/w;
 
